@@ -27,7 +27,7 @@
         "classmap": [
             "tests/FactoryTest.php",
             "tests/ClientTest.php",
-            "tests/ObjectTest.php",
+            "tests/ObjectTest.php"
         ],
         "psr-4": {
             "Baqirfarooq\\Teamwork\\": "src"
