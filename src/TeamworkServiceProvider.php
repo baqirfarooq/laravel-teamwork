@@ -12,17 +12,18 @@ class TeamworkServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        $this->app['baqirfarooq.teamwork'] = $this->app->share(function($app)
-        {
-            $client = new \Baqirfarooq\Teamwork\Client(new Guzzle,
-                $app['config']->get('services.teamwork.key'),
-                $app['config']->get('services.teamwork.url')
-            );
+        $app = $this->app;
 
-            return new \Baqirfarooq\Teamwork\Factory($client);
+        $app->singleton('baqirfarooq.teamwork', function() use ($app) {
+            $client = new Client(new Guzzle,
+                config('services.teamwork.key'),
+                config('services.teamwork.url')
+            );
+            return new Factory($client);
+
         });
 
-        $this->app->bind('Baqirfarooq\Teamwork\Factory', 'baqirfarooq.teamwork');
+        $app->bind('Baqirfarooq\Teamwork\Factory', 'baqirfarooq.teamwork');
     }
 
 }
