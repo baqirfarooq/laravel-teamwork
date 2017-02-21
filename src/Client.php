@@ -133,7 +133,7 @@ class Client implements RequestableInterface {
         $buildQuery = ['auth' => [$this->key, 'X'], 'query' => $query];
         if (count($params) > 0)
         {
-            $buildQuery = ['auth' => [$this->key, 'X'], 'body' => $params, 'query' => $query];
+            $buildQuery = ['auth' => [$this->key, 'X'], 'body' => json_encode($params), 'query' => $query];
         }
 
         try {
@@ -142,6 +142,8 @@ class Client implements RequestableInterface {
             $response = $e->getResponse();
             $this->request = $response;
         }
+
+//        dd($this->request->getBody());
 
         return $this;
     }
