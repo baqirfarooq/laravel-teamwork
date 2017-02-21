@@ -2,6 +2,7 @@
 
 use GuzzleHttp\Client as Guzzle;
 use Baqirfarooq\Teamwork\Contracts\RequestableInterface;
+use GuzzleHttp\Exception\ClientException;
 
 class Client implements RequestableInterface {
 
@@ -127,20 +128,19 @@ class Client implements RequestableInterface {
      *
      * @return $this
      */
-    public function buildRequest($endpoint, $action, $params = [], $query = null)
+    public function buildRequest($endpoint, $action, $params = [], $query = [])
     {
+        $buildQuery = ['auth' => [$this->key, 'X'], 'query' => $query];
         if (count($params) > 0)
         {
-            $params = json_encode($params);
+            $buildQuery = ['auth' => [$this->key, 'X'], 'body' => $params, 'query' => $query];
         }
 
-        $this->request = $this->client->createRequest($action,
-            $this->buildUrl($endpoint), ['auth' => [$this->key, 'X'], 'body' => $params]
-        );
-
-        if ($query != null)
-        {
-            $this->buildQuery($query);
+        try {
+            $this->request = $this->client->request($action, $this->buildUrl($endpoint), $buildQuery);
+        }  catch (ClientException  $e) {
+            $response = $e->getResponse();
+            $this->request = $response;
         }
 
         return $this;
@@ -154,9 +154,13 @@ class Client implements RequestableInterface {
      */
     public function response()
     {
-        $this->response = $this->client->send($this->request);
+//        $this->response = $this->client->send($this->request);
 
-        return $this->response->json();
+//        $this->response = $this->request->getBody();
+        $this->response = json_decode($this->request->getBody(), true);
+
+        return $this->response;
+
     }
 
     /**
