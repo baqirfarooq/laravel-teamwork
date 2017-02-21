@@ -47,6 +47,17 @@ class Project extends AbstractObject {
     }
 
     /**
+     * Get People On Project
+     * GET /projects/{project_id}/people.json
+     *
+     * @return mixed
+     */
+    public function addPeople($id, $data)
+    {
+        return $this->client->put("$this->endpoint/$id/people", $data)->response();
+    }
+
+    /**
      * Get Starred Projects
      * GET /projects/starred.json
      *
