@@ -23,7 +23,13 @@ class Project extends AbstractObject {
 
         return $this->client->get("$this->endpoint/$this->id/latestActivity", $args)->response();
     }
-
+    /**
+     * @return mixed
+     */
+    public function updateForce($id, $data)
+    {
+        return $this->client->put("$this->endpoint/".$id, [$this->wrapper => $data])->response();
+    }
     /**
      * Get Companies In Project
      * GET /projects/{project_id}/companies.json
