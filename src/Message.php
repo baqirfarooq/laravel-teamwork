@@ -21,9 +21,9 @@ class Message extends AbstractObject {
      *
      * @retun mixed
      */
-    public function create($data)
+    public function create($id, $data)
     {
-        return $this->client->post("projects/$this->id/posts", [$this->wrapper => $data])->response();
+        return $this->client->post("projects/$id/posts", [$this->wrapper => $data])->response();
     }
 
     /**
